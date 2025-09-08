@@ -31,7 +31,6 @@ interface UserRecord {
   chartsCount: number
 }
 
-// Mock data for demonstration
 const mockUsers: UserRecord[] = [
   {
     id: "1",
@@ -106,13 +105,12 @@ export function UserManagement() {
     })
   }
 
-  const getInitials = (name: string) => {
-    return name
+  const getInitials = (name: string) =>
+    name
       .split(" ")
       .map((n) => n[0])
       .join("")
       .toUpperCase()
-  }
 
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
@@ -186,7 +184,8 @@ export function UserManagement() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
           <h2 className="text-3xl font-bold text-balance">User Management</h2>
           <p className="text-muted-foreground text-pretty">Manage user accounts, roles, and permissions</p>
@@ -194,7 +193,7 @@ export function UserManagement() {
 
         <Dialog open={isAddUserOpen} onOpenChange={setIsAddUserOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-full sm:w-auto">
               <UserPlus className="h-4 w-4 mr-2" />
               Add User
             </Button>
@@ -306,14 +305,15 @@ export function UserManagement() {
           filteredUsers.map((user) => (
             <Card key={user.id}>
               <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3 flex-1">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  {/* User Info */}
+                  <div className="flex items-start gap-3 flex-1 w-full">
                     <Avatar>
                       <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                     </Avatar>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
                         <h4 className="font-medium">{user.name}</h4>
                         {getRoleBadge(user.role)}
                         {getStatusBadge(user.status)}
@@ -321,10 +321,10 @@ export function UserManagement() {
 
                       <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
                         <Mail className="h-3 w-3" />
-                        <span>{user.email}</span>
+                        <span className="truncate">{user.email}</span>
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm text-muted-foreground">
+                      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Calendar className="h-3 w-3" />
                           <span>Joined {formatDate(user.joinDate)}</span>
@@ -343,12 +343,13 @@ export function UserManagement() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  {/* Controls */}
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <Select
                       value={user.role}
                       onValueChange={(value: "user" | "admin") => handleRoleChange(user.id, value)}
                     >
-                      <SelectTrigger className="w-[100px]">
+                      <SelectTrigger className="w-full sm:w-[100px]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -359,9 +360,11 @@ export function UserManagement() {
 
                     <Select
                       value={user.status}
-                      onValueChange={(value: "active" | "inactive" | "suspended") => handleStatusChange(user.id, value)}
+                      onValueChange={(value: "active" | "inactive" | "suspended") =>
+                        handleStatusChange(user.id, value)
+                      }
                     >
-                      <SelectTrigger className="w-[120px]">
+                      <SelectTrigger className="w-full sm:w-[120px]">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
@@ -379,7 +382,7 @@ export function UserManagement() {
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Users</CardTitle>
@@ -394,7 +397,9 @@ export function UserManagement() {
             <CardTitle className="text-sm font-medium">Active Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">{users.filter((u) => u.status === "active").length}</div>
+            <div className="text-2xl font-bold text-green-600">
+              {users.filter((u) => u.status === "active").length}
+            </div>
           </CardContent>
         </Card>
 
@@ -412,7 +417,9 @@ export function UserManagement() {
             <CardTitle className="text-sm font-medium">Total Uploads</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{users.reduce((sum, u) => sum + u.uploadsCount, 0)}</div>
+            <div className="text-2xl font-bold">
+              {users.reduce((sum, u) => sum + u.uploadsCount, 0)}
+            </div>
           </CardContent>
         </Card>
       </div>

@@ -35,34 +35,34 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
   ]
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       {/* Header */}
-      <header className="border-b bg-card">
-        <div className="flex h-16 items-center justify-between px-6">
+      <header className="border-b bg-card sticky top-0 z-50">
+        <div className="flex h-16 items-center justify-between px-4 sm:px-6">
           <div className="flex items-center gap-2">
             <div className="p-2 bg-primary rounded-lg">
               <BarChart3 className="h-6 w-6 text-primary-foreground" />
             </div>
-            <h1 className="text-xl font-bold">ExcelViz Pro</h1>
+            <h1 className="text-lg sm:text-xl font-bold">ExcelViz Pro</h1>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <div className="hidden sm:flex items-center gap-2">
               <span className="text-sm text-muted-foreground">Welcome,</span>
               <span className="font-medium">{user?.email}</span>
               <Badge variant={user?.role === "admin" ? "default" : "secondary"}>{user?.role}</Badge>
             </div>
             <Button variant="outline" size="sm" onClick={onLogout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
+              <LogOut className="h-4 w-4 mr-1" />
+              <span className="hidden sm:inline">Logout</span>
             </Button>
           </div>
         </div>
       </header>
 
-      <div className="flex">
-        {/* Sidebar */}
-        <aside className="w-64 border-r bg-card min-h-[calc(100vh-4rem)]">
+      <div className="flex flex-1">
+        {/* Sidebar (hidden on mobile) */}
+        <aside className="hidden sm:block w-64 border-r bg-card min-h-[calc(100vh-4rem)]">
           <nav className="p-4 space-y-2">
             {navigationItems.map((item) => {
               const Icon = item.icon
@@ -82,84 +82,52 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
         </aside>
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 sm:p-6">
           {currentView === "overview" && (
             <div className="space-y-6">
               <div>
-                <h2 className="text-3xl font-bold text-balance">Dashboard Overview</h2>
-                <p className="text-muted-foreground text-pretty">Manage your Excel data visualizations and analytics</p>
+                <h2 className="text-2xl sm:text-3xl font-bold">Dashboard Overview</h2>
+                <p className="text-muted-foreground text-sm sm:text-base">Manage your Excel data visualizations</p>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Total Uploads</CardTitle>
-                    <FileSpreadsheet className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">24</div>
-                    <p className="text-xs text-muted-foreground">+2 from last week</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Charts Created</CardTitle>
-                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">67</div>
-                    <p className="text-xs text-muted-foreground">+12 from last week</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Downloads</CardTitle>
-                    <Download className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">156</div>
-                    <p className="text-xs text-muted-foreground">+23 from last week</p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Active Users</CardTitle>
-                    <Users className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">8</div>
-                    <p className="text-xs text-muted-foreground">+1 from last week</p>
-                  </CardContent>
-                </Card>
+              {/* Stats Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {[
+                  { title: "Total Uploads", value: "24", icon: FileSpreadsheet, change: "+2 from last week" },
+                  { title: "Charts Created", value: "67", icon: BarChart3, change: "+12 from last week" },
+                  { title: "Downloads", value: "156", icon: Download, change: "+23 from last week" },
+                  { title: "Active Users", value: "8", icon: Users, change: "+1 from last week" },
+                ].map((stat, i) => (
+                  <Card key={i}>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                      <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                      <stat.icon className="h-4 w-4 text-muted-foreground" />
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-xl sm:text-2xl font-bold">{stat.value}</div>
+                      <p className="text-xs text-muted-foreground">{stat.change}</p>
+                    </CardContent>
+                  </Card>
+                ))}
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Quick Actions + Recent Activity */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Quick Actions</CardTitle>
-                    <CardDescription>Get started with your data analysis</CardDescription>
+                    <CardDescription>Get started with your data</CardDescription>
                   </CardHeader>
-                  <CardContent className="space-y-4">
+                  <CardContent className="space-y-3">
                     <Button className="w-full justify-start" onClick={() => setCurrentView("upload")}>
                       <Upload className="h-4 w-4 mr-2" />
                       Upload New Excel File
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start bg-transparent"
-                      onClick={() => setCurrentView("charts")}
-                    >
+                    <Button variant="outline" className="w-full justify-start" onClick={() => setCurrentView("charts")}>
                       <BarChart3 className="h-4 w-4 mr-2" />
                       View Charts
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start bg-transparent"
-                      onClick={() => setCurrentView("history")}
-                    >
+                    <Button variant="outline" className="w-full justify-start" onClick={() => setCurrentView("history")}>
                       <History className="h-4 w-4 mr-2" />
                       View Upload History
                     </Button>
@@ -169,38 +137,24 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
-                    <CardDescription>Your latest uploads and charts</CardDescription>
+                    <CardDescription>Your latest uploads</CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-3">
+                  <CardContent className="space-y-4">
+                    {[
+                      { icon: Upload, text: "sales-data.xlsx uploaded", time: "2 hours ago" },
+                      { icon: BarChart3, text: "Bar chart created", time: "3 hours ago" },
+                      { icon: Download, text: "Chart exported as PNG", time: "5 hours ago" },
+                    ].map((activity, i) => (
+                      <div key={i} className="flex items-center gap-3">
                         <div className="p-2 bg-primary/10 rounded-full">
-                          <Upload className="h-4 w-4 text-primary" />
+                          <activity.icon className="h-4 w-4 text-primary" />
                         </div>
                         <div className="flex-1">
-                          <p className="text-sm font-medium">sales-data.xlsx uploaded</p>
-                          <p className="text-xs text-muted-foreground">2 hours ago</p>
+                          <p className="text-sm font-medium">{activity.text}</p>
+                          <p className="text-xs text-muted-foreground">{activity.time}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-primary/10 rounded-full">
-                          <BarChart3 className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">Bar chart created</p>
-                          <p className="text-xs text-muted-foreground">3 hours ago</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <div className="p-2 bg-primary/10 rounded-full">
-                          <Download className="h-4 w-4 text-primary" />
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-sm font-medium">Chart exported as PNG</p>
-                          <p className="text-xs text-muted-foreground">5 hours ago</p>
-                        </div>
-                      </div>
-                    </div>
+                    ))}
                   </CardContent>
                 </Card>
               </div>
@@ -208,14 +162,30 @@ export function Dashboard({ user, onLogout }: DashboardProps) {
           )}
 
           {currentView === "upload" && <FileUpload onFileUpload={handleFileUpload} />}
-
           {currentView === "charts" && <ChartViewer data={uploadedData} />}
-
           {currentView === "history" && <UploadHistory />}
-
           {currentView === "users" && user?.role === "admin" && <UserManagement />}
         </main>
       </div>
+
+      {/* Bottom Nav for Mobile */}
+      <nav className="sm:hidden fixed bottom-0 left-0 right-0 border-t bg-card flex justify-around py-2">
+        {navigationItems.map((item) => {
+          const Icon = item.icon
+          return (
+            <button
+              key={item.id}
+              onClick={() => setCurrentView(item.id as DashboardView)}
+              className={`flex flex-col items-center text-xs ${
+                currentView === item.id ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              <Icon className="h-5 w-5 mb-1" />
+              {item.label}
+            </button>
+          )
+        })}
+      </nav>
     </div>
   )
 }

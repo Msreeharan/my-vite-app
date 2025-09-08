@@ -148,7 +148,6 @@ export function UploadHistory() {
   }
 
   const handleExportUpload = (upload: UploadRecord, type: "csv" | "excel") => {
-    // Mock data for the upload - in real app this would fetch actual data
     const mockData = Array.from({ length: upload.rowCount }, (_, i) => {
       const row: any = {}
       for (let j = 0; j < upload.columnCount; j++) {
@@ -241,19 +240,20 @@ export function UploadHistory() {
           filteredUploads.map((upload) => (
             <Card key={upload.id}>
               <CardContent className="p-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-start gap-3 flex-1">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  {/* File Info */}
+                  <div className="flex items-start gap-3 flex-1 w-full">
                     <div className="p-2 bg-primary/10 rounded-lg">
                       <FileSpreadsheet className="h-5 w-5 text-primary" />
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-2">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
                         <h4 className="font-medium truncate">{upload.fileName}</h4>
                         {getStatusBadge(upload.status)}
                       </div>
 
-                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm text-muted-foreground">
+                      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-4 gap-3 text-sm text-muted-foreground">
                         <div>
                           <p className="font-medium text-foreground">Uploaded</p>
                           <p>{formatDate(upload.uploadDate)}</p>
@@ -280,14 +280,16 @@ export function UploadHistory() {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">
+                  {/* Actions */}
+                  <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                    <Button variant="outline" size="sm" className="w-full sm:w-auto">
                       <Eye className="h-4 w-4 mr-2" />
                       View
                     </Button>
+
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm">
+                        <Button variant="outline" size="sm" className="w-full sm:w-auto">
                           <Download className="h-4 w-4 mr-2" />
                           Download
                         </Button>
@@ -303,11 +305,12 @@ export function UploadHistory() {
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
+
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleDelete(upload.id)}
-                      className="text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive w-full sm:w-auto"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
