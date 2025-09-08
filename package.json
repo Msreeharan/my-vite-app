@@ -2,10 +2,10 @@
   "name": "my-v0-project",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-  "dev": "next dev",
-  "build": "next build",
-  "start": "next start -p $PORT"
+  "scripts": {
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview"
 },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -76,5 +76,22 @@
     "tailwindcss": "^4.1.9",
     "tw-animate-css": "1.3.3",
     "typescript": "^5.9.2"
-  }
+  },
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Msreeharan/my-vite-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Msreeharan/my-vite-app/issues"
+  },
+  "homepage": "https://github.com/Msreeharan/my-vite-app#readme"
 }
