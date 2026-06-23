@@ -34,7 +34,7 @@ interface UserRecord {
 const mockUsers: UserRecord[] = [
   {
     id: "1",
-    email: "john.doe@company.com",
+    email: "msreeharan084@gmail.com",
     name: "John Doe",
     role: "admin",
     status: "active",
@@ -45,7 +45,7 @@ const mockUsers: UserRecord[] = [
   },
   {
     id: "2",
-    email: "sarah.wilson@company.com",
+    email: "archana.084@gmail.com",
     name: "Sarah Wilson",
     role: "user",
     status: "active",
@@ -56,7 +56,7 @@ const mockUsers: UserRecord[] = [
   },
   {
     id: "3",
-    email: "mike.johnson@company.com",
+    email: "dhayanithi084@gmail.com",
     name: "Mike Johnson",
     role: "user",
     status: "active",
@@ -67,7 +67,7 @@ const mockUsers: UserRecord[] = [
   },
   {
     id: "4",
-    email: "lisa.brown@company.com",
+    email: "madhu084@gmail.com",
     name: "Lisa Brown",
     role: "user",
     status: "inactive",
@@ -78,7 +78,7 @@ const mockUsers: UserRecord[] = [
   },
   {
     id: "5",
-    email: "david.clark@company.com",
+    email: "raveena084@gmail.com",
     name: "David Clark",
     role: "user",
     status: "suspended",
